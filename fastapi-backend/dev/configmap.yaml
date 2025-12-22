@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: fastapi-backend-config
+  name: testing-fastapi-backend-config
   namespace: testing # Namespace tempat API berjalan
 data:
   # --- Network Config ---
