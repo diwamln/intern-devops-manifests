@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-backend
+  namespace: testing
+  labels:
+    app: fastapi-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-backend
+  template:
+    metadata:
+      labels:
+        app: fastapi-backend
+    spec:
+      containers:
+      - name: backend
+        image: diwamln/fastapi-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: http
+
+        # --- UPDATE DI SINI ---
+        # Load semua environment variable dari ConfigMap dan Secret
+        envFrom:
+        - configMapRef:
+            name: fastapi-backend-config
+        - secretRef:
+            name: fastapi-backend-secrets
+
+        livenessProbe:
+          httpGet:
+            path: /api/v1/utils/health-check
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
