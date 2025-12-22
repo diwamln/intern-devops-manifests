@@ -27,9 +27,9 @@ spec:
         # Load semua environment variable dari ConfigMap dan Secret
         envFrom:
         - configMapRef:
-            name: fastapi-backend-config
+            name: testing-fastapi-backend-config
         - secretRef:
-            name: fastapi-backend-secrets
+            name: testing-fastapi-backend-secrets
 
         livenessProbe:
           httpGet:

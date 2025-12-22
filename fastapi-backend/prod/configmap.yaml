@@ -7,7 +7,7 @@ data:
   # --- Network Config ---
   DOMAIN: "localhost"
   FRONTEND_HOST: "http://localhost:5173"
-  ENVIRONMENT: "staging"
+  ENVIRONMENT: "producton"
 
   # --- App Config ---
   PROJECT_NAME: "Full Stack FastAPI Project"
