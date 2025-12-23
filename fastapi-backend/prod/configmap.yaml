@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fastapi-backend-config
-  namespace: testing # Namespace tempat API berjalan
+  namespace: production # Namespace tempat API berjalan
 data:
   # --- Network Config ---
   DOMAIN: "localhost"
