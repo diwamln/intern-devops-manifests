@@ -16,36 +16,56 @@ spec:
         app: fastapi-backend
     spec:
       containers:
-      - name: backend
-        image: diwamln/fastapi-backend:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8000
-          name: http
+        - name: backend
+          image: diwamln/fastapi-backend:latest
+          imagePullPolicy: Always
 
-        # --- UPDATE DI SINI ---
-        # Load semua environment variable dari ConfigMap dan Secret
-        envFrom:
-        - configMapRef:
-            name: testing-fastapi-backend-config
-        - secretRef:
-            name: testing-fastapi-backend-secrets
+          ports:
+            - name: http
+              containerPort: 8000
 
-        livenessProbe:
-          httpGet:
-            path: /api/v1/utils/health-check
-            port: 8000
-          initialDelaySeconds: 15
-          periodSeconds: 10
-        readinessProbe:
-          tcpSocket:
-            port: 8000
-          initialDelaySeconds: 10
-          periodSeconds: 10
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
+          # Load ENV dari ConfigMap & Secret
+          envFrom:
+            - configMapRef:
+                name: testing-fastapi-backend-config
+            - secretRef:
+                name: testing-fastapi-backend-secrets
+
+          # =========================
+          # PROBES (FASTAPI SAFE)
+          # =========================
+
+          # Startup probe → kasih waktu FastAPI + DB + config init
+          startupProbe:
+            tcpSocket:
+              port: 8000
+            failureThreshold: 30   # 30 x 5s = 150s max startup
+            periodSeconds: 5
+
+          # Liveness → cek process hidup, JANGAN endpoint berat
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+
+          # Readiness → cek API sudah siap terima traffic
+          readinessProbe:
+            httpGet:
+              path: /api/v1/utils/health-check
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 3
+
+          # =========================
+          # RESOURCES
+          # =========================
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
