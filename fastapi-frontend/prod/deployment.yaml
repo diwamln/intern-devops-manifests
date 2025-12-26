@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: docker.io/diwamln/fastapi-frontend:latest
+        image: docker.io/diwamln/fastapi-frontend:build-7-b96ae22-prod
         ports:
         - containerPort: 80
         resources:
