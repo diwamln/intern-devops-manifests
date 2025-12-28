@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: diwamln/fastapi-backend:build-1-d17305f
+          image: diwamln/fastapi-backend:build-2-d17305f
           imagePullPolicy: Always
 
           ports:
