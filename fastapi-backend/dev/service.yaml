@@ -6,9 +6,9 @@ metadata:
 spec:
   selector:
     app: fastapi-backend
-  type: NodePort  # <--- UBAH DARI ClusterIP MENJADI NodePort
+  type: ClusterIP  # <--- UBAH DARI ClusterIP MENJADI NodePort
   ports:
     - protocol: TCP
       port: 80         # Port internal cluster (antar service)
       targetPort: 8000 # Port aplikasi di container (Uvicorn/FastAPI)
-      nodePort: 30093  # <--- OPSIONAL: Harus di range 30000-32767    - protocol: TCP
+#      nodePort: 30093  # <--- OPSIONAL: Harus di range 30000-32767    - protocol: TCP
