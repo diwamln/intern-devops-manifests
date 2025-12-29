@@ -26,8 +26,8 @@ spec:
 
           # Load ENV dari ConfigMap & Secret
           envFrom:
-            - configMapRef:
-                name: testing-fastapi-backend-config
+#            - configMapRef:
+#                name: testing-fastapi-backend-config
             - secretRef:
                 name: testing-fastapi-backend-secrets
 
